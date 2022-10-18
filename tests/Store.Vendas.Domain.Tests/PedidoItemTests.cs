@@ -6,7 +6,7 @@ namespace Store.Vendas.Domain.Tests
     public class PedidoItemTests
     {
         [Fact(DisplayName = "Novo Item Pedido com unidades Abaixo Do Permitido")]
-        [Trait("Categoria", "Item Pedido Tests")]
+        [Trait("Categoria", "Vendas - Pedido Item")]
         public void AdicionarItemPedido_ItemAbaixoDoPermitido_DeveRetornarException()
         {
             // Arrange & Act & Assert

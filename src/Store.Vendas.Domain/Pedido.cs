@@ -18,31 +18,50 @@ namespace Store.Vendas.Domain
             _pedidoItems = new List<PedidoItem>();
         }
 
-        public void AdicionarItem(PedidoItem item)
+        public void AdicionarItem(PedidoItem pedidoItem)
         {
             //Green => fazer funcionar da forma mais basica e simples
             //ValorTotal = 200;
 
             //Refacotor
-            if (item.Quantidade > MAXUNIDADESITEM)
-                throw new DomainException($"Máximo de {MAXUNIDADESITEM} unidades por produto");
+            ValidarQuantidadePermitida(pedidoItem);
 
-
-
-            if (_pedidoItems.Any(p => p.ProdutoId == item.ProdutoId))
+            if (PedidoItemExistente(pedidoItem))
             {
-                var itemExistente = _pedidoItems.FirstOrDefault(p => p.ProdutoId == item.ProdutoId);
+                var itemExistente = _pedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId);
 
                 if (itemExistente is null) return;
 
-                itemExistente.AdicionarUnidade(item.Quantidade);
-                item = itemExistente;
+                itemExistente.AdicionarUnidade(pedidoItem.Quantidade);
+
+                pedidoItem = itemExistente;
 
                 _pedidoItems.Remove(itemExistente);
             }
 
-            _pedidoItems.Add(item);
+            _pedidoItems.Add(pedidoItem);
             CalcularValorPedido();
+        }
+
+        private bool PedidoItemExistente(PedidoItem pedidoItem)
+        {
+            return _pedidoItems.Any(p => p.ProdutoId == pedidoItem.ProdutoId);
+        }
+
+        private void ValidarQuantidadePermitida(PedidoItem pedidoItem)
+        {
+            var quantidadeItems = pedidoItem.Quantidade;
+
+            if (PedidoItemExistente(pedidoItem))
+            {
+                var itemExistente = _pedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId);
+
+                if (itemExistente is not null)
+                    quantidadeItems += itemExistente.Quantidade;
+            }
+            if (quantidadeItems > MAXUNIDADESITEM)
+                throw new DomainException($"Máximo de {MAXUNIDADESITEM} unidades por produto");
+
         }
 
         private void CalcularValorPedido()
