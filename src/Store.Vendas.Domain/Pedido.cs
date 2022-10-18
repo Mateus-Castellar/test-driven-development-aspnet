@@ -1,4 +1,5 @@
-﻿using Store.Core.DomainObjects;
+﻿using FluentValidation.Results;
+using Store.Core.DomainObjects;
 
 namespace Store.Vendas.Domain
 {
@@ -9,9 +10,12 @@ namespace Store.Vendas.Domain
 
         public Guid ClienteId { get; set; }
         public decimal ValorTotal { get; private set; }
+        public decimal Desconto { get; set; }
         public PedidoStatus PedidoStatus { get; set; }
         public IReadOnlyCollection<PedidoItem> PedidoItems => _pedidoItems;
         private readonly List<PedidoItem> _pedidoItems;
+        public Voucher? Voucher { get; set; }
+        public bool VoucherUtilizado { get; set; }
 
         protected Pedido()
         {
@@ -96,6 +100,40 @@ namespace Store.Vendas.Domain
             _pedidoItems.Remove(pedidoItem);
 
             CalcularValorPedido();
+        }
+
+        public ValidationResult AplicarVoucher(Voucher voucher)
+        {
+            var result = voucher.ValidarSeAplicavel();
+
+            if (result.IsValid is false) return result;
+
+            Voucher = voucher;
+            VoucherUtilizado = true;
+
+            CalcularValorTotalDesconto();
+
+            return result;
+        }
+
+        public void CalcularValorTotalDesconto()
+        {
+            if (VoucherUtilizado is false) return;
+            decimal desconto = 0;
+
+            if (Voucher?.TipoDescontoVoucher == TipoDescontoVoucher.Valor)
+            {
+                if (Voucher.ValorDesconto.HasValue)
+                    desconto = Voucher.ValorDesconto.Value;
+            }
+            else
+            {
+                if (Voucher.PercentualDesconto.HasValue)
+                    desconto = (ValorTotal * Voucher.PercentualDesconto.Value) / 100;
+            }
+
+            ValorTotal -= desconto;
+            Desconto = desconto;
         }
 
         public static class PedidoFactory
