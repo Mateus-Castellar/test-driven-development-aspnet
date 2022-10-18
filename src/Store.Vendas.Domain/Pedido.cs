@@ -20,17 +20,12 @@ namespace Store.Vendas.Domain
 
         public void AdicionarItem(PedidoItem pedidoItem)
         {
-            //Green => fazer funcionar da forma mais basica e simples
-            //ValorTotal = 200;
-
-            //Refacotor
             ValidarQuantidadePermitida(pedidoItem);
 
             if (PedidoItemExistente(pedidoItem))
             {
-                var itemExistente = _pedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId);
-
-                if (itemExistente is null) return;
+                var itemExistente = _pedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId)
+                    ?? throw new ArgumentNullException(nameof(pedidoItem), "item nulo");
 
                 itemExistente.AdicionarUnidade(pedidoItem.Quantidade);
 
@@ -46,6 +41,12 @@ namespace Store.Vendas.Domain
         private bool PedidoItemExistente(PedidoItem pedidoItem)
         {
             return _pedidoItems.Any(p => p.ProdutoId == pedidoItem.ProdutoId);
+        }
+
+        private void ValidarPedidoItemInexistente(PedidoItem pedidoItem)
+        {
+            if (PedidoItemExistente(pedidoItem) is false)
+                throw new DomainException("O item não pertence ao pedido!");
         }
 
         private void ValidarQuantidadePermitida(PedidoItem pedidoItem)
@@ -72,6 +73,20 @@ namespace Store.Vendas.Domain
         private void TornarRascunho()
         {
             PedidoStatus = PedidoStatus.Rascunho;
+        }
+
+        public void AtualizarItem(PedidoItem pedidoItem)
+        {
+            ValidarPedidoItemInexistente(pedidoItem);
+            ValidarQuantidadePermitida(pedidoItem);
+
+            var itemExistente = PedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId)
+                 ?? throw new ArgumentNullException(nameof(pedidoItem), "item nulo");
+
+            _pedidoItems.Remove(itemExistente);
+            _pedidoItems.Add(pedidoItem);
+
+            CalcularValorPedido();
         }
 
         public static class PedidoFactory
