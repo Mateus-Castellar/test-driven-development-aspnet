@@ -5,11 +5,13 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7F2A5FB-08C0-47F7-820C-557B9A871007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Vendas.Application.Tests", "tests\Store.Vendas.Application.Tests\Store.Vendas.Application.Tests.csproj", "{3DFCEAA6-DA89-48D5-A0F1-950467119172}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Vendas.Application.Tests", "tests\Store.Vendas.Application.Tests\Store.Vendas.Application.Tests.csproj", "{3DFCEAA6-DA89-48D5-A0F1-950467119172}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Vendas.Domain.Tests", "tests\Store.Vendas.Domain.Tests\Store.Vendas.Domain.Tests.csproj", "{E1BCC16A-1F75-4193-91F7-A53050658074}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Vendas.Domain.Tests", "tests\Store.Vendas.Domain.Tests\Store.Vendas.Domain.Tests.csproj", "{E1BCC16A-1F75-4193-91F7-A53050658074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Vendas.Domain", "src\Store.Vendas.Domain\Store.Vendas.Domain.csproj", "{0EB16139-56DD-4A9B-8789-9F65850CCA4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Vendas.Domain", "src\Store.Vendas.Domain\Store.Vendas.Domain.csproj", "{0EB16139-56DD-4A9B-8789-9F65850CCA4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Core", "src\Store.Core\Store.Core.csproj", "{AC031BB6-FCDE-4137-BDF3-51A00A4B465D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{0EB16139-56DD-4A9B-8789-9F65850CCA4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EB16139-56DD-4A9B-8789-9F65850CCA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EB16139-56DD-4A9B-8789-9F65850CCA4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC031BB6-FCDE-4137-BDF3-51A00A4B465D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC031BB6-FCDE-4137-BDF3-51A00A4B465D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC031BB6-FCDE-4137-BDF3-51A00A4B465D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC031BB6-FCDE-4137-BDF3-51A00A4B465D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
