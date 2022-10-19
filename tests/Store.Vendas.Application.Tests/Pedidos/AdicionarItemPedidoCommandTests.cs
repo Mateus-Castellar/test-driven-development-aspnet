@@ -1,4 +1,5 @@
 ﻿using Store.Vendas.Application.Commands;
+using Store.Vendas.Domain;
 using Xunit;
 namespace Store.Vendas.Application.Tests.Pedidos
 {
@@ -37,6 +38,23 @@ namespace Store.Vendas.Application.Tests.Pedidos
             Assert.Contains(AdicionarItemPedidoValidation.NomeErroMsg, pedidoCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
             Assert.Contains(AdicionarItemPedidoValidation.QtdMinErroMsg, pedidoCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
             Assert.Contains(AdicionarItemPedidoValidation.ValorErroMsg, pedidoCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
+        }
+
+
+        [Fact(DisplayName = "Adicionar Item Command unidades acima do permitido")]
+        [Trait("Categoria", "Vendas - Pedido Commands")]
+        public void AdicionarItemPedidoCommand_QuantidadeUnidadesSuperiorAoPermitido_NaoDevePassarNaValidacao()
+        {
+            // Arrange
+            var pedidoCommand = new AdicionarItemPedidoCommand(Guid.NewGuid(),
+                Guid.NewGuid(), "Produto Teste", Pedido.MAXUNIDADESITEM + 1, 100);
+
+            // Act
+            var result = pedidoCommand.EhValido();
+
+            // Assert
+            Assert.False(result);
+            Assert.Contains(AdicionarItemPedidoValidation.QtdMaxErroMsg, pedidoCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
         }
     }
 }
