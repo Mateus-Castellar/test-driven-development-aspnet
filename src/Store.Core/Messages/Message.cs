@@ -2,7 +2,7 @@
 {
     public abstract class Message
     {
-        public string? MessageType { get; protected set; }
+        public string MessageType { get; protected set; } = null!;
         public Guid AggregateId { get; protected set; }
 
         public Message()
