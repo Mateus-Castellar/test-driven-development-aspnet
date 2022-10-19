@@ -72,6 +72,7 @@ namespace Store.Vendas.Domain
         private void CalcularValorPedido()
         {
             ValorTotal = PedidoItems.Sum(item => item.CalcularValor());
+            CalcularValorTotalDesconto();
         }
 
         private void TornarRascunho()
