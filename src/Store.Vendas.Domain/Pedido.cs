@@ -118,21 +118,30 @@ namespace Store.Vendas.Domain
 
         public void CalcularValorTotalDesconto()
         {
-            if (VoucherUtilizado is false) return;
+            if (VoucherUtilizado is false)
+                return;
+
             decimal desconto = 0;
+            var valor = ValorTotal;
 
             if (Voucher?.TipoDescontoVoucher == TipoDescontoVoucher.Valor)
             {
                 if (Voucher.ValorDesconto.HasValue)
+                {
                     desconto = Voucher.ValorDesconto.Value;
+                    valor -= desconto;
+                }
             }
             else
             {
                 if (Voucher.PercentualDesconto.HasValue)
+                {
                     desconto = (ValorTotal * Voucher.PercentualDesconto.Value) / 100;
+                    valor -= desconto;
+                }
             }
 
-            ValorTotal -= desconto;
+            ValorTotal = valor < 0 ? 0 : valor;
             Desconto = desconto;
         }
 
