@@ -3,7 +3,7 @@ using Store.Core.DomainObjects;
 
 namespace Store.Vendas.Domain
 {
-    public class Pedido
+    public class Pedido : Entity, IAggregateRoot
     {
         public static int MAXUNIDADESITEM => 15;
         public static int MINUNIDADESITEM => 1;
